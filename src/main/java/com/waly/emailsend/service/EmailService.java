@@ -26,7 +26,7 @@ public class EmailService {
 
     private String subject = "Obrigado por visitar meu portfólio!";
     private String body = "Segue anexo curriculo!";
-    private String attachmentFilePath;
+    private String attachmentFilePath = "C:\\Users\\walys\\Downloads\\curriculo.pdf";
 
     public void sendEmail(EmailDTO dto) {
         try{
@@ -38,6 +38,9 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(body);
 
+            // Adicionando o anexo
+            FileSystemResource file = new FileSystemResource(new File(attachmentFilePath));
+            helper.addAttachment("curriculo.pdf", file);
 
 
             emailSender.send(message);
