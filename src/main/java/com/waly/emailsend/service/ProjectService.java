@@ -19,4 +19,9 @@ public class ProjectService {
     public List<ProjectDTO> findAll(){
         return repository.findAll().stream().map(ProjectDTO::new).toList();
     }
+
+    @Transactional(readOnly = true)
+    public ProjectDTO findById(long id){
+        return new ProjectDTO(repository.findById(id).orElseThrow(()-> new RuntimeException("not found")));
+    }
 }
