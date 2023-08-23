@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToMany;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProjectDTO {
 
@@ -16,7 +17,7 @@ public class ProjectDTO {
     private String description;
 
     private String imgUrl;
-    private Set<Technology> technologies = new HashSet<>();
+    private Set<TechnologyDTO> technologiesDto = new HashSet<>();
 
     public ProjectDTO(){}
 
@@ -31,7 +32,7 @@ public class ProjectDTO {
         this.name = entity.getName();
         this.description = entity.getDescription();
         this.imgUrl = entity.getImgUrl();
-        this.technologies = entity.getTechnologies();
+        this.technologiesDto = entity.getTechnologies().stream().map(TechnologyDTO::new).collect(Collectors.toSet());
     }
 
     public long getId() {
@@ -66,11 +67,11 @@ public class ProjectDTO {
         this.imgUrl = imgUrl;
     }
 
-    public Set<Technology> getTechnologies() {
-        return technologies;
+    public Set<TechnologyDTO> getTechnologies() {
+        return technologiesDto;
     }
 
-    public void AddTechnologies(Technology technologies) {
-        this.technologies.add(technologies);
+    public void AddTechnologies(TechnologyDTO technologies) {
+        this.technologiesDto.add(technologies);
     }
 }

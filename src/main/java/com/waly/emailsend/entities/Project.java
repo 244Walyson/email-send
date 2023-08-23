@@ -60,7 +60,7 @@ public class Project {
         return technologies;
     }
 
-    public void AddTechnologies(Technology technology) {
+    public void AddTechnology(Technology technology) {
         this.technologies.add(technology);
     }
     public String getImgUrl() {
