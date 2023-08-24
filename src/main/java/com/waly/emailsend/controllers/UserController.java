@@ -16,34 +16,24 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserSevice sevice;
+    private UserSevice service;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll(){
-        return ResponseEntity.ok(sevice.findAll());
-    }
-    @GetMapping(value = "/email")
-    public ResponseEntity<UserDTO> findByEmail(@RequestParam(value = "email", defaultValue = "") String email){
-        return ResponseEntity.ok(sevice.findByEmail(email));
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto){
-        dto = sevice.insert(dto);
+        dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
-    @PostMapping(value = "/verify")
-    public ResponseEntity<VerifyDTO> verify(@RequestBody VerifyDTO dto){
-        dto = sevice.verify(dto);
-        if (dto == null){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
-    }
 
-    @GetMapping(value = "/findverify")
-    public ResponseEntity<VerifyDTO> findverify(){
-        return ResponseEntity.ok(sevice.findverify());
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable long id, @RequestBody UserDTO dto){
+        dto = service.update(dto, id);
+        return ResponseEntity.ok(dto);
     }
 }

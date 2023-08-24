@@ -51,29 +51,8 @@ public class UserSevice {
     }
 
     @Transactional
-    public UserDTO findByEmail(String email){
-        return new UserDTO(repository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("not found")));
-    }
-    @Transactional
-    public VerifyDTO findverify(){
-        return new VerifyDTO(verifyRepository.getVerify(Instant.now(), 123321, "maria@gmail.com").get(0));
-    }
-    @Transactional
-    public VerifyDTO verify(VerifyDTO dto){
-        List<Verify> list = verifyRepository.getVerify(Instant.now(), dto.getCode(), dto.getEmail());
-        System.out.println(dto.getCode() + dto.getEmail());
-
-        if (list.isEmpty()) {
-            return null;
-        }
-        User user = repository.findByEmail(dto.getEmail()).orElseThrow(()-> new ResourceNotFoundException("not found"));
-        user.setVerified(true);
-        repository.save(user);
-        return new VerifyDTO(list.get(0));
-    }
-    @Transactional
-    public UserDTO update(UserDTO dto) {
-        User entity = new User();
+    public UserDTO update(UserDTO dto, long id) {
+        User entity = repository.getReferenceById(id);
         entity.setName(dto.getName());
         entity.setPassword(dto.getPassword());
         entity.setEmail(dto.getEmail());
