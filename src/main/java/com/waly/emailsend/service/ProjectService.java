@@ -10,6 +10,8 @@ import com.waly.emailsend.service.Exceptions.DatabaseException;
 import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +29,9 @@ public class ProjectService {
 
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> findAll(){
-        return repository.findAll().stream().map(ProjectDTO::new).toList();
+    public Page<ProjectDTO> findAll(Pageable pageable){
+        Page<Project> page = repository.findAll(pageable);
+        return page.map(ProjectDTO::new);
     }
 
     @Transactional(readOnly = true)

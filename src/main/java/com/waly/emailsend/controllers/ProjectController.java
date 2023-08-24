@@ -3,6 +3,8 @@ package com.waly.emailsend.controllers;
 import com.waly.emailsend.dto.ProjectDTO;
 import com.waly.emailsend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,9 +21,9 @@ public class ProjectController {
     private ProjectService service;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> findAll(){
-        List<ProjectDTO> list = service.findAll();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<Page<ProjectDTO>> findAll(Pageable pageable){
+        Page<ProjectDTO> page = service.findAll(pageable);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
