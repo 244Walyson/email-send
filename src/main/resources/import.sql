@@ -27,3 +27,5 @@ INSERT INTO tb_user (name, email, password, verified) VALUES ('Alex Green', 'ale
 
 INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT');
 INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+
+INSERT INTO tb_verify (code, expiration, email) VALUES (123321, '2023-08-24 23:59:00', 'maria@gmail.com');

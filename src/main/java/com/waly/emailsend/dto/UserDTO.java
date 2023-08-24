@@ -8,6 +8,7 @@ public class UserDTO {
     private String name;
     private String email;
     private String password;
+    private boolean verified;
 
     public UserDTO(){}
 
@@ -16,6 +17,7 @@ public class UserDTO {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.verified = false;
     }
 
     public UserDTO(User entity) {
@@ -23,6 +25,7 @@ public class UserDTO {
         this.name = entity.getName();
         this.email = entity.getEmail();
         this.password = entity.getPassword();
+        this.verified = entity.isVerified();
     }
 
     public long getId() {
@@ -55,5 +58,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
