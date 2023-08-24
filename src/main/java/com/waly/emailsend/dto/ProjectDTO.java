@@ -14,6 +14,7 @@ public class ProjectDTO {
 
     private long id;
     private String name;
+    private  String githubLink;
     private String description;
 
     private String imgUrl;
@@ -21,11 +22,12 @@ public class ProjectDTO {
 
     public ProjectDTO(){}
 
-    public ProjectDTO(long id, String name, String description, String imgUrl) {
+    public ProjectDTO(long id, String name, String description, String imgUrl,  String githubLink) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.githubLink =  githubLink;
     }
     public ProjectDTO(Project entity){
         this.id = entity.getId();
@@ -33,6 +35,7 @@ public class ProjectDTO {
         this.description = entity.getDescription();
         this.imgUrl = entity.getImgUrl();
         this.technologiesDto = entity.getTechnologies().stream().map(TechnologyDTO::new).collect(Collectors.toSet());
+        this.githubLink = entity.getGithubLink();
     }
 
     public long getId() {
@@ -73,5 +76,13 @@ public class ProjectDTO {
 
     public void AddTechnologies(TechnologyDTO technologies) {
         this.technologiesDto.add(technologies);
+    }
+
+    public String getGithubLink() {
+        return githubLink;
+    }
+
+    public void setGithubLink(String githubLink) {
+        this.githubLink = githubLink;
     }
 }

@@ -55,16 +55,6 @@ public class ProjectService {
         entity = repository.save(entity);
         return new ProjectDTO(entity);
     }
-    private Project copyDtoToEntity(ProjectDTO dto, Project entity){
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setImgUrl(dto.getImgUrl());
-        for (TechnologyDTO t : dto.getTechnologies()){
-            Technology tec = technologiesRepository.getReferenceById(t.getId());
-            entity.AddTechnology(tec);
-        }
-        return entity;
-    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(long id) {
@@ -77,5 +67,17 @@ public class ProjectService {
         catch (DataIntegrityViolationException e){
             throw new DatabaseException("data integrity violation");
         }
+    }
+
+    private Project copyDtoToEntity(ProjectDTO dto, Project entity){
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setImgUrl(dto.getImgUrl());
+        entity.setGithubLink(dto.getGithubLink());
+        for (TechnologyDTO t : dto.getTechnologies()){
+            Technology tec = technologiesRepository.getReferenceById(t.getId());
+            entity.AddTechnology(tec);
+        }
+        return entity;
     }
 }

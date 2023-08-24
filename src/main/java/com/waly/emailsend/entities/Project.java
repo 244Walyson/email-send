@@ -14,7 +14,7 @@ public class Project {
     private long id;
     private String name;
     private String description;
-
+    private String githubLink;
     private String imgUrl;
 
 
@@ -25,11 +25,12 @@ public class Project {
     private Set<Technology> technologies = new HashSet<>();
 
     public Project(){}
-    public Project(long id, String name, String description, String imgUrl) {
+    public Project(long id, String name, String description, String imgUrl, String githubLink) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.githubLink = githubLink;
     }
 
     public long getId() {
@@ -69,5 +70,13 @@ public class Project {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getGithubLink() {
+        return githubLink;
+    }
+
+    public void setGithubLink(String githubLink) {
+        this.githubLink = githubLink;
     }
 }
