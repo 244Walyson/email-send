@@ -34,7 +34,7 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public ProjectDTO findById(long id){
-        return new ProjectDTO(repository.findById(id).orElseThrow(()-> new RuntimeException("not found")));
+        return new ProjectDTO(repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("not found")));
     }
 
     @Transactional
