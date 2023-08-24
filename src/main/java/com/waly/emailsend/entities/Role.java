@@ -1,10 +1,11 @@
 package com.waly.emailsend.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "tb_role")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +16,7 @@ public class Role {
 
     public Role(long id, String authority) {
         Id = id;
-        authority = authority;
+        this.authority = authority;
     }
 
     public long getId() {

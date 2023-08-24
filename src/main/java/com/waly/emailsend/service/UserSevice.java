@@ -1,8 +1,10 @@
 package com.waly.emailsend.service;
 
+import com.waly.emailsend.config.projections.UserDetailsProjection;
 import com.waly.emailsend.dto.EmailDTO;
 import com.waly.emailsend.dto.UserDTO;
 import com.waly.emailsend.dto.VerifyDTO;
+import com.waly.emailsend.entities.Role;
 import com.waly.emailsend.entities.User;
 import com.waly.emailsend.entities.Verify;
 import com.waly.emailsend.repositories.UserRepository;
@@ -12,6 +14,9 @@ import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class UserSevice {
+public class UserSevice implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
@@ -72,5 +77,22 @@ public class UserSevice {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("data integrity violation");
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<UserDetailsProjection> result = repository.searchUserAndRolesByEmail(username);
+
+        if (result.isEmpty()){
+            throw new UsernameNotFoundException("email not found");
+        }
+
+        User user = new User();
+        user.setEmail(result.get(0).getUsername());
+        user.setPassword(result.get(0).getPassword());
+        for (UserDetailsProjection projection : result){
+            user.AddRoles(new Role(projection.getRoleId(), projection.getAuthority()));
+        }
+        return user;
     }
 }
