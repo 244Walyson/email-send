@@ -7,7 +7,9 @@ import com.waly.emailsend.entities.Technology;
 import com.waly.emailsend.repositories.ProjectRepository;
 import com.waly.emailsend.repositories.TechnologiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -57,5 +59,17 @@ public class ProjectService {
             entity.AddTechnology(tec);
         }
         return entity;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(long id) {
+        if (!repository.existsById(id)){
+
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e){
+        }
     }
 }
