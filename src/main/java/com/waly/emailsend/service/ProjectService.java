@@ -6,6 +6,8 @@ import com.waly.emailsend.entities.Project;
 import com.waly.emailsend.entities.Technology;
 import com.waly.emailsend.repositories.ProjectRepository;
 import com.waly.emailsend.repositories.TechnologiesRepository;
+import com.waly.emailsend.service.Exceptions.DatabaseException;
+import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -64,12 +66,13 @@ public class ProjectService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(long id) {
         if (!repository.existsById(id)){
-
+            throw new ResourceNotFoundException("entity not found");
         }
         try {
             repository.deleteById(id);
         }
         catch (DataIntegrityViolationException e){
+            throw new DatabaseException("data integrity violation");
         }
     }
 }
