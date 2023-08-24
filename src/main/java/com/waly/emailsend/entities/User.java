@@ -15,7 +15,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-
+    private boolean verified;
     @ManyToMany
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -28,6 +28,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.verified = false;
     }
 
     public long getId() {
@@ -60,5 +61,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }

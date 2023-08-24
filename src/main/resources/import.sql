@@ -20,3 +20,10 @@ INSERT INTO tb_project_technology (project, technology) VALUES (3, 2); -- Task M
 INSERT INTO tb_project_technology (project, technology) VALUES (4, 5); -- Financial Tracker com MySQL
 INSERT INTO tb_project_technology (project, technology) VALUES (5, 1); -- Travel Planning App com Java
 INSERT INTO tb_project_technology (project, technology) VALUES (5, 3); -- Travel Planning App com ReactJS
+
+
+INSERT INTO tb_user (name, email, password, verified) VALUES ('Maria Brown', 'maria@gmail.com', '$2a$10$4vet6vWuI78kQf9HcbTMYeuN1eM6yKeBwcpa7dsYdc0ARQypKbVhm', false);
+INSERT INTO tb_user (name, email, password, verified) VALUES ('Alex Green', 'alex@gmail.com', '$2a$10$4vet6vWuI78kQf9HcbTMYeuN1eM6yKeBwcpa7dsYdc0ARQypKbVhm', false);
+
+INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
