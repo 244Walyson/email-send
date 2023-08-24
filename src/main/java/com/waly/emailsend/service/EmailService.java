@@ -49,4 +49,20 @@ public class EmailService {
             throw new EmailException("Failed to send email");
         }
     }
+
+    public void sendEmailRecover(EmailDTO dto, String recoverCode) {
+        try{
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setFrom(emailFrom);
+            helper.setTo(dto.getEmail());
+            helper.setSubject("Verificação de Email");
+            helper.setText("Seu codigo de verificação é<br><h2>"+recoverCode+"</h2>");
+            emailSender.send(message);
+        }
+        catch (MailException | MessagingException e){
+            throw new EmailException("Failed to send email");
+        }
+    }
 }

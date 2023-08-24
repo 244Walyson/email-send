@@ -2,7 +2,9 @@ package com.waly.emailsend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +23,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany
+    private List<Verify> verifies = new ArrayList<>();
+
     public User(){}
 
     public User(long id, String name, String email, String password) {
