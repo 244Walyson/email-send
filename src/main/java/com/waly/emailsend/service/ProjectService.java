@@ -40,6 +40,14 @@ public class ProjectService {
         return new ProjectDTO(entity);
     }
 
+    @Transactional
+    public ProjectDTO update(ProjectDTO dto, long id){
+
+        Project entity = repository.getReferenceById(id);
+        copyDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new ProjectDTO(entity);
+    }
     private Project copyDtoToEntity(ProjectDTO dto, Project entity){
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
