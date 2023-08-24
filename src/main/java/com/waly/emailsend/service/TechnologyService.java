@@ -3,9 +3,12 @@ package com.waly.emailsend.service;
 import com.waly.emailsend.dto.TechnologyDTO;
 import com.waly.emailsend.entities.Technology;
 import com.waly.emailsend.repositories.TechnologiesRepository;
+import com.waly.emailsend.service.Exceptions.DatabaseException;
 import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -46,5 +49,17 @@ public class TechnologyService {
         entity.setName(dto.getName());
         entity.setImgUrl(dto.getImgUrl());
         return entity;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(long id) {
+        if (!repository.existsById(id)){
+            throw new ResourceNotFoundException("not found");
+        }
+        try {
+            repository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException("data integrity violation");
+        }
     }
 }
