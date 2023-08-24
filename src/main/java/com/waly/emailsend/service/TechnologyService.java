@@ -1,6 +1,7 @@
 package com.waly.emailsend.service;
 
 import com.waly.emailsend.dto.TechnologyDTO;
+import com.waly.emailsend.entities.Technology;
 import com.waly.emailsend.repositories.TechnologiesRepository;
 import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,27 @@ public class TechnologyService {
     @Transactional
     public TechnologyDTO finById(long id) {
         return new TechnologyDTO(repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("not found")));
+    }
+
+    @Transactional
+    public TechnologyDTO insert(TechnologyDTO dto){
+        Technology entity = new Technology();
+        copyDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new TechnologyDTO(entity);
+    }
+
+    @Transactional
+    public TechnologyDTO update(TechnologyDTO dto, long id){
+        Technology entity = repository.getReferenceById(id);
+        copyDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new TechnologyDTO(entity);
+    }
+
+    private Technology copyDtoToEntity(TechnologyDTO dto, Technology entity) {
+        entity.setName(dto.getName());
+        entity.setImgUrl(dto.getImgUrl());
+        return entity;
     }
 }

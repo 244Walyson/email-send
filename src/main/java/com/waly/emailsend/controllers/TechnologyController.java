@@ -4,11 +4,10 @@ import com.waly.emailsend.dto.TechnologyDTO;
 import com.waly.emailsend.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,5 +25,17 @@ public class TechnologyController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<TechnologyDTO> findById(@PathVariable long id){
         return ResponseEntity.ok(service.finById(id));
+    }
+    @PostMapping
+    public ResponseEntity<TechnologyDTO> insert(@RequestBody TechnologyDTO dto){
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TechnologyDTO> update(@RequestBody TechnologyDTO dto, @PathVariable long id){
+        dto = service.update(dto, id);
+        return ResponseEntity.ok(dto);
     }
 }
