@@ -7,10 +7,13 @@ import com.waly.emailsend.entities.User;
 import com.waly.emailsend.entities.Verify;
 import com.waly.emailsend.repositories.UserRepository;
 import com.waly.emailsend.repositories.VerifyRepository;
+import com.waly.emailsend.service.Exceptions.DatabaseException;
 import com.waly.emailsend.service.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -59,5 +62,15 @@ public class UserSevice {
         entity = repository.save(entity);
         return new UserDTO(entity);
     }
-
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("not found");
+        }
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("data integrity violation");
+        }
+    }
 }
