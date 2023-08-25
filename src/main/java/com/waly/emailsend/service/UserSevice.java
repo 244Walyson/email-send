@@ -7,6 +7,7 @@ import com.waly.emailsend.dto.VerifyDTO;
 import com.waly.emailsend.entities.Role;
 import com.waly.emailsend.entities.User;
 import com.waly.emailsend.entities.Verify;
+import com.waly.emailsend.repositories.RoleRepository;
 import com.waly.emailsend.repositories.UserRepository;
 import com.waly.emailsend.repositories.VerifyRepository;
 import com.waly.emailsend.service.Exceptions.DatabaseException;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,8 @@ public class UserSevice implements UserDetailsService {
     private EmailService emailService;
     @Autowired
     private VerifyRepository verifyRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     Random random = new Random();
 
@@ -46,12 +50,16 @@ public class UserSevice implements UserDetailsService {
     public UserDTO insert(UserDTO dto) {
         User entity = new User();
         entity.setName(dto.getName());
-        entity.setPassword(dto.getPassword());
         entity.setEmail(dto.getEmail());
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
 
+        for ( Role role : dto.getRoles()){
+            entity.AddRoles(role);
+        }
         int randomNumber = 100_000 + random.nextInt(900_000);
         Verify verify = new Verify(entity.getId(), randomNumber, entity.getEmail(), Instant.now().plusSeconds(3600));
+        verify.setUser(entity);
         verifyRepository.save(verify);
         emailService.sendEmailRecover(new EmailDTO(dto.getEmail()), String.valueOf(randomNumber));
 
@@ -62,8 +70,11 @@ public class UserSevice implements UserDetailsService {
     public UserDTO update(UserDTO dto, long id) {
         User entity = repository.getReferenceById(id);
         entity.setName(dto.getName());
-        entity.setPassword(dto.getPassword());
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity.setEmail(dto.getEmail());
+        for (Role role : dto.getRoles()){
+            entity.AddRoles(role);
+        }
         entity = repository.save(entity);
         return new UserDTO(entity);
     }

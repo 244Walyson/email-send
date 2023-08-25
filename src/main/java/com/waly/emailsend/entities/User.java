@@ -23,7 +23,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Verify> verifies = new ArrayList<>();
 
     public User(){}

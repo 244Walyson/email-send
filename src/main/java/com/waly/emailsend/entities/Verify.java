@@ -17,6 +17,7 @@ public class Verify {
     private Instant expiration;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Verify(){}

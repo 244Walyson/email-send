@@ -1,6 +1,10 @@
 package com.waly.emailsend.dto;
 
+import com.waly.emailsend.entities.Role;
 import com.waly.emailsend.entities.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserDTO {
 
@@ -9,6 +13,8 @@ public class UserDTO {
     private String email;
     private String password;
     private boolean verified;
+
+    private Set<Role> roles = new HashSet<>();
 
     public UserDTO(){}
 
@@ -66,5 +72,9 @@ public class UserDTO {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 }
